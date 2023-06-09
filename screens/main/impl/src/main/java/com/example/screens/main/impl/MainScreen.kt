@@ -1,5 +1,6 @@
 package com.example.screens.main.impl
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,31 +61,36 @@ fun MainScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val lazyColumnState = rememberLazyListState()
+
+    val logoIcon = BitmapFactory.decodeResource(
+        LocalContext.current.resources,
+        R.drawable.dota2_logo_icon
+    )
     val players = listOf(
         Player(
             id = "123",
             nickname = "Kostya",
-            avatar = LocalContext.current.getDrawable(R.drawable.dota2_logo_icon)
+            avatar = logoIcon
         ),
         Player(
             id = "1234",
             nickname = "Leha",
-            avatar = LocalContext.current.getDrawable(R.drawable.dota2_logo_icon)
+            avatar = logoIcon
         ),
         Player(
             id = "12345",
             nickname = "Yarik",
-            avatar = LocalContext.current.getDrawable(R.drawable.dota2_logo_icon)
+            avatar = logoIcon
         ),
         Player(
             id = "123456",
             nickname = "KonstAntin",
-            avatar = LocalContext.current.getDrawable(R.drawable.dota2_logo_icon)
+            avatar = logoIcon
         ),
         Player(
             id = "123567",
             nickname = "Alex",
-            avatar = LocalContext.current.getDrawable(R.drawable.dota2_logo_icon)
+            avatar = logoIcon
         )
     )
 
@@ -95,9 +102,7 @@ fun MainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .background(
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    .background(color = MaterialTheme.colorScheme.primary)
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 onBurgerIconIsClicked = {
                     coroutineScope.launch {
@@ -106,9 +111,8 @@ fun MainScreen(
                 }
             )
         },
-        drawerContent = {
-            DrawerContent()
-        },
+        drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+        drawerContent = { DrawerContent() },
     ) { paddingValues ->
         Surface(
             modifier = Modifier.consumeWindowInsets(paddingValues)
@@ -121,12 +125,17 @@ fun MainScreen(
                     horizontal = 12.dp, vertical = 18.dp
                 )
             ) {
-//                items(
-//                    players.size,
-//                    key = { index -> players[index].id }
-//                ) { index ->
-//
-//                }
+                items(
+                    players.size,
+                    key = { index -> players[index].id }
+                ) { index ->
+                    PlayerCard(player = players[index])
+
+                    if (index != players.lastIndex)
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp))
+                }
             }
         }
     }
@@ -188,7 +197,8 @@ private fun DrawerContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
+            .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp))
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
     ) {
         Image(
             painter = painterResource(id = R.drawable.dota2_logo_icon),
@@ -200,7 +210,7 @@ private fun DrawerContent(
 @ExperimentalMaterial3Api
 @Composable
 private fun PlayerCard(
-    //player: Player,
+    player: Player,
     modifier: Modifier = Modifier,
     onClick: (id: String) -> Unit = {},
 ) {
@@ -212,7 +222,10 @@ private fun PlayerCard(
         ),
         contentPadding = PaddingValues(16.dp),
         shape = RoundedCornerShape(size = 12.dp),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(
+            width = 2.dp,
+            color = MaterialTheme.colorScheme.outlineVariant
+        ),
         onClick = { onClick("") },
     ) {
         Row(
@@ -222,11 +235,18 @@ private fun PlayerCard(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
-                modifier = Modifier.size(40.dp),
+            player.avatar?.asImageBitmap()?.let { imageBitmap ->
+                Image(
+                    modifier = Modifier.size(50.dp),
+                    bitmap = imageBitmap,
+                    contentDescription = ""
+                )
+            } ?: Image(
+                modifier = Modifier.size(50.dp),
                 painter = painterResource(id = R.drawable.dota2_logo_icon),
                 contentDescription = ""
             )
+
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -234,7 +254,7 @@ private fun PlayerCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
@@ -243,16 +263,16 @@ private fun PlayerCard(
                         .wrapContentHeight(),
                     text = "Nickname",
                     maxLines = 1,
-                    fontSize = 16.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight(500),
-                    textAlign = TextAlign.Start
+                    textAlign = TextAlign.Start,
                 )
             }
         }
     }
 }
 
-@Preview(showSystemUi = false)
+@Preview(showBackground = true)
 @Composable
 @ExperimentalMaterial3Api
 fun PlayerCardPreview() {
@@ -260,7 +280,15 @@ fun PlayerCardPreview() {
         PlayerCard(
             modifier = Modifier
                 .width(335.dp)
-                .height(80.dp)
+                .height(80.dp),
+            player = Player(
+                id = "123",
+                nickname = "Sergey-Kostyan",
+                avatar = BitmapFactory.decodeResource(
+                    LocalContext.current.resources,
+                    R.drawable.dota2_logo_icon
+                )
+            )
         )
     }
 }
