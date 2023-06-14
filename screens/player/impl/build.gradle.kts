@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.utils"
+    namespace = "com.example.screens.player.impl"
     compileSdk = 33
 
     defaultConfig {
@@ -40,21 +40,9 @@ android {
 
 dependencies {
 
-    api("androidx.core:core-ktx:1.10.1")
-    api("androidx.appcompat:appcompat:1.6.1")
-    api("com.google.android.material:material:1.9.0")
-
-    // Compose
-    api("androidx.compose.ui:ui:1.4.3")
-    api("androidx.compose.foundation:foundation:1.4.3")
-    api("androidx.compose.ui:ui-tooling:1.4.3")
-    api("androidx.compose.ui:ui-tooling-preview:1.4.3")
-    api("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
-
-    //   -Material
-    api("androidx.compose.material:material:1.4.3")
-    api("androidx.compose.material3:material3:1.1.0")
-
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.impl.R
 import com.example.screens.main.api.data.Player
+import com.example.screens.main.impl.components.PlayerCard
 import kotlinx.coroutines.launch
 
 @Composable
@@ -59,8 +60,8 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
     val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
     val lazyColumnState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     val logoIcon = BitmapFactory.decodeResource(
         LocalContext.current.resources,
@@ -129,12 +130,19 @@ fun MainScreen(
                     players.size,
                     key = { index -> players[index].id }
                 ) { index ->
-                    PlayerCard(player = players[index])
+                    PlayerCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        player = players[index]
+                    )
 
                     if (index != players.lastIndex)
-                        Spacer(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp))
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                        )
                 }
             }
         }
@@ -203,92 +211,6 @@ private fun DrawerContent(
         Image(
             painter = painterResource(id = R.drawable.dota2_logo_icon),
             contentDescription = "dota2 logo"
-        )
-    }
-}
-
-@ExperimentalMaterial3Api
-@Composable
-private fun PlayerCard(
-    player: Player,
-    modifier: Modifier = Modifier,
-    onClick: (id: String) -> Unit = {},
-) {
-    Button(
-        modifier = modifier,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-        contentPadding = PaddingValues(16.dp),
-        shape = RoundedCornerShape(size = 12.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = MaterialTheme.colorScheme.outlineVariant
-        ),
-        onClick = { onClick("") },
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            player.avatar?.asImageBitmap()?.let { imageBitmap ->
-                Image(
-                    modifier = Modifier.size(50.dp),
-                    bitmap = imageBitmap,
-                    contentDescription = ""
-                )
-            } ?: Image(
-                modifier = Modifier.size(50.dp),
-                painter = painterResource(id = R.drawable.dota2_logo_icon),
-                contentDescription = ""
-            )
-
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    text = "Nickname",
-                    maxLines = 1,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight(500),
-                    textAlign = TextAlign.Start,
-                )
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-@ExperimentalMaterial3Api
-fun PlayerCardPreview() {
-    MaterialTheme {
-        PlayerCard(
-            modifier = Modifier
-                .width(335.dp)
-                .height(80.dp),
-            player = Player(
-                id = "123",
-                nickname = "Sergey-Kostyan",
-                avatar = BitmapFactory.decodeResource(
-                    LocalContext.current.resources,
-                    R.drawable.dota2_logo_icon
-                )
-            )
         )
     }
 }

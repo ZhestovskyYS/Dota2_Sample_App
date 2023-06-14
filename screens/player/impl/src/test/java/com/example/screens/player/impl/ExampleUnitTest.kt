@@ -1,4 +1,4 @@
-package com.example.utils
+package com.example.screens.player.impl
 
 import org.junit.Test
 
