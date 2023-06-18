@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nickname">Nickname</string>
+    <string name="last_online">Last online</string>
+    <string name="profile_link">PROFILE LINK</string>
+    <string name="steam_profile_link">STEAM PROFILE LINK</string>
+</resources>

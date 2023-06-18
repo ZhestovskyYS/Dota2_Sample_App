@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="win_rate">Win rate %</string>
+    <string name="losses">Losses</string>
+    <string name="wins">Wins</string>
+    <string name="mmr">MMR</string>
+    <string name="hero_name">Hero name</string>
+</resources>
