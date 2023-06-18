@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
@@ -35,14 +34,16 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     players: List<Player>,
     @DrawableRes
-    placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon
+    placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val lazyColumnState = rememberLazyListState()
+
     val firstVisibleItemIndex by remember {
         derivedStateOf { lazyColumnState.firstVisibleItemIndex }
     }
+
     val textFieldValue = remember {
         mutableStateOf(
             TextFieldValue("")

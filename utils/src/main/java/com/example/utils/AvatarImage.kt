@@ -24,7 +24,6 @@ fun AvatarImage(
     Box(modifier) {
         ImageInBox(
             modifier = Modifier
-                .align(Alignment.Center)
                 .clip(CircleShape)
                 .size(120.dp)
                 .background(color = MaterialTheme.colorScheme.primaryContainer),

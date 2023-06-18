@@ -17,19 +17,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.screens.player.impl.components.PlayerBestHeroOutlinedCard
 import com.example.screens.player.impl.components.PlayerStatsOutlinedCard
-import com.example.utils.PlayerCard
+import com.example.utils.PlayerInfoCard
 import com.example.utils.R
 
 @Composable
-fun PlayerInfoScreen(
-    modifier: Modifier = Modifier
-) {
+fun PlayerInfoScreen(modifier: Modifier = Modifier) {
     Surface(modifier) {
         LazyColumn(verticalArrangement = Arrangement.Top) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                PlayerCard(
+                PlayerInfoCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),

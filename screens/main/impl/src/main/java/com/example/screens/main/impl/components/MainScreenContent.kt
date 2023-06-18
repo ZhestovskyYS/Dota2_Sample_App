@@ -72,8 +72,6 @@ internal fun MainScreenContent(
     isFabVisible: Boolean,
     onFabIsClicked: () -> Unit,
 ) {
-    val localDensity = LocalDensity.current
-
     Scaffold(
         modifier,
         scaffoldState = scaffoldState,
@@ -91,12 +89,8 @@ internal fun MainScreenContent(
         floatingActionButton = {
             AnimatedVisibility(
                 visible = isFabVisible,
-                enter = slideInVertically { with(localDensity) { -40.dp.roundToPx() } }
-                        + expandVertically(expandFrom = Alignment.Top)
-                        + fadeIn(initialAlpha = 0.3f),
-                exit = slideOutVertically()
-                        + shrinkVertically()
-                        + fadeOut(),
+                enter = fadeIn(initialAlpha = 0.3f),
+                exit = fadeOut(),
             ) {
                 FloatingActionButton(
                     modifier = Modifier.size(56.dp),

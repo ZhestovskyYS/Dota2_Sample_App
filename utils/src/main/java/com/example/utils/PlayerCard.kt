@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PlayerCard(
+fun PlayerInfoCard(
     modifier: Modifier = Modifier,
     nickname: String,
     lastOnline: String,
@@ -48,6 +48,7 @@ fun PlayerCard(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             AvatarImage(
                 painter = avatarImagePainter,
@@ -143,7 +144,7 @@ fun PlayerCard(
 @Composable
 @Preview
 private fun PlayerCard_Preview() {
-    PlayerCard(
+    PlayerInfoCard(
         avatarImagePainter = painterResource(id = R.drawable.dota2_icon_placeholder),
         nickname = "Durachyo",
         lastOnline = "12 hours ago",
