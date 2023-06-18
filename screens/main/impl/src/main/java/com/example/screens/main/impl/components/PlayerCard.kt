@@ -1,6 +1,7 @@
 package com.example.screens.main.impl.components
 
 import android.graphics.BitmapFactory
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -34,12 +35,14 @@ import androidx.compose.ui.unit.sp
 import com.example.impl.R
 import com.example.screens.main.api.data.Player
 
-@Composable
 @ExperimentalMaterial3Api
+@Composable
 internal fun PlayerCard(
     player: Player,
     modifier: Modifier = Modifier,
     onClick: (id: String) -> Unit = {},
+    @DrawableRes
+    placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon,
 ) {
     Button(
         modifier = modifier,
@@ -50,7 +53,7 @@ internal fun PlayerCard(
         contentPadding = PaddingValues(16.dp),
         shape = RoundedCornerShape(size = 12.dp),
         border = BorderStroke(
-            width = 1.dp,
+            width = 2.dp,
             color = MaterialTheme.colorScheme.outlineVariant
         ),
         onClick = { onClick("") },
@@ -70,9 +73,10 @@ internal fun PlayerCard(
                 )
             } ?: Image(
                 modifier = Modifier.size(50.dp),
-                painter = painterResource(id = R.drawable.dota2_logo_icon),
+                painter = painterResource(id = placeHolderDrawableRes),
                 contentDescription = ""
             )
+
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -101,12 +105,9 @@ internal fun PlayerCard(
 @Preview(showBackground = true)
 @Composable
 @ExperimentalMaterial3Api
-fun PlayerCardPreview() {
+private fun PlayerCardPreview() {
     MaterialTheme {
         PlayerCard(
-            modifier = Modifier
-                .width(335.dp)
-                .height(80.dp),
             player = Player(
                 id = "123",
                 nickname = "Sergey-Kostyan",
@@ -114,7 +115,11 @@ fun PlayerCardPreview() {
                     LocalContext.current.resources,
                     R.drawable.dota2_logo_icon
                 )
-            )
+            ),
+            modifier = Modifier
+                .width(335.dp)
+                .height(80.dp),
+            placeHolderDrawableRes = R.drawable.dota2_logo_icon
         )
     }
 }
