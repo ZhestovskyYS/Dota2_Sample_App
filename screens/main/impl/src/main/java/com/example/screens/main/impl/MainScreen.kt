@@ -4,15 +4,20 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,20 +40,23 @@ fun MainScreen(
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val lazyColumnState = rememberLazyListState()
+    val firstVisibleItemIndex by remember {
+        derivedStateOf { lazyColumnState.firstVisibleItemIndex }
+    }
     val textFieldValue = remember {
         mutableStateOf(
             TextFieldValue("")
         )
     }
-    val isRefreshing = remember { mutableStateOf(false) }
-
+    var isRefreshing by remember { mutableStateOf(false) }
+    var isFabVisible by remember { mutableStateOf(true) }
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing.value,
+        refreshing = isRefreshing,
         onRefresh = {
             coroutineScope.launch {
-                isRefreshing.value = true
+                isRefreshing = true
                 delay(500L)
-                isRefreshing.value = false
+                isRefreshing = false
             }
         }
     )
@@ -61,8 +69,17 @@ fun MainScreen(
         players = players,
         lazyColumnState = lazyColumnState,
         placeHolderDrawableRes = placeHolderDrawableRes,
-        isRefreshing = isRefreshing.value
+        isRefreshing = isRefreshing,
+        isFabVisible = isFabVisible,
+        onFabIsClicked = {
+            coroutineScope.launch {
+                lazyColumnState.animateScrollToItem(0)
+                isFabVisible = false
+            }
+        }
     )
+
+    LaunchedEffect(firstVisibleItemIndex) { isFabVisible = firstVisibleItemIndex >= 3 }
 }
 
 @Composable
