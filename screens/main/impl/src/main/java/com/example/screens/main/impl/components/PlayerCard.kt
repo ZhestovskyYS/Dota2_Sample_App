@@ -3,7 +3,10 @@ package com.example.screens.main.impl.components
 import android.graphics.BitmapFactory
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Indication
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,14 +15,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,26 +48,20 @@ import com.example.screens.main.api.data.Player
 internal fun PlayerCard(
     player: Player,
     modifier: Modifier = Modifier,
-    onClick: (id: String) -> Unit = {},
     @DrawableRes
     placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon,
 ) {
-    Button(
+    OutlinedCard(
         modifier = modifier,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ),
-        contentPadding = PaddingValues(16.dp),
         shape = RoundedCornerShape(size = 12.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = MaterialTheme.colorScheme.outlineVariant
-        ),
-        onClick = { onClick("") },
     ) {
         Row(
             modifier = Modifier
+                .padding(16.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
             horizontalArrangement = Arrangement.Start,
@@ -91,7 +93,7 @@ internal fun PlayerCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    text = "Nickname",
+                    text = player.nickname,
                     maxLines = 1,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(500),
@@ -105,9 +107,18 @@ internal fun PlayerCard(
 @Preview(showBackground = true)
 @Composable
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 private fun PlayerCardPreview() {
     MaterialTheme {
+
         PlayerCard(
+            modifier = Modifier
+                .width(335.dp)
+                .height(80.dp)
+                .combinedClickable(
+                    onClick = { },
+                    onLongClick = { }
+                ),
             player = Player(
                 id = "123",
                 nickname = "Sergey-Kostyan",
@@ -116,9 +127,6 @@ private fun PlayerCardPreview() {
                     R.drawable.dota2_logo_icon
                 )
             ),
-            modifier = Modifier
-                .width(335.dp)
-                .height(80.dp),
             placeHolderDrawableRes = R.drawable.dota2_logo_icon
         )
     }

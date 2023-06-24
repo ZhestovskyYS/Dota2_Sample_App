@@ -1,5 +1,7 @@
 package com.example.screens.main.impl.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,13 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.screens.main.api.data.Player
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 internal fun PlayersList(
     modifier: Modifier = Modifier,
     lazyColumnState: LazyListState,
     players: List<Player>,
-    placeHolderDrawableRes: Int
+    placeHolderDrawableRes: Int,
+    onCardIsClicked: (Player) -> Unit,
+    onCardLongClick: (Player) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -36,6 +41,11 @@ internal fun PlayersList(
             key = { index -> players[index].id }
         ) { index ->
             PlayerCard(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = { onCardIsClicked(players[index]) },
+                        onLongClick = { onCardLongClick(players[index]) }
+                    ),
                 player = players[index],
                 placeHolderDrawableRes = placeHolderDrawableRes
             )

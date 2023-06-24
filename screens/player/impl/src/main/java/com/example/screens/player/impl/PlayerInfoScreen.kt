@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.screens.player.impl.components.PlayerBestHeroOutlinedCard
 import com.example.screens.player.impl.components.PlayerStatsOutlinedCard
-import com.example.utils.PlayerInfoCard
+import com.example.utils.ui.PlayerInfoCard
 import com.example.utils.R
 
 @Composable
