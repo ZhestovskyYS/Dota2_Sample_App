@@ -91,8 +91,10 @@ class GetPlayerUseCaseImpl : GetPlayersUseCase {
         withContext(Dispatchers.IO) {
             delay(500L)
             ProcessState.Success(
-                players.filter { it.nickname.contains(searchPattern, ignoreCase = true) }
+                players.filter { player ->
+                    player.nickname.contains(searchPattern, ignoreCase = true)
+                }
             )
-    }
+        }
 
 }

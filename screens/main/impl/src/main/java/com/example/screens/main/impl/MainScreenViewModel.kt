@@ -23,6 +23,7 @@ class MainScreenViewModel(
 
     private val _state = MutableStateFlow(MainScreenContract.State())
     override val state = _state.asStateFlow()
+
     private var lastSavedPattern = ""
 
     private val _effect = MutableSharedFlow<MainScreenContract.Effect>()
@@ -105,7 +106,7 @@ class MainScreenViewModel(
     private fun checkPatternAndDo(
         pattern: String,
         action: (String) -> Unit,
-        errorAction: () -> Unit = {},
+        errorAction: () -> Unit = { },
     ) {
         if (pattern.isNotBlank() && lastSavedPattern != pattern)
             action(pattern)

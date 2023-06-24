@@ -16,6 +16,9 @@ interface MainScreenContract : UnidirectionalViewModel<
         val isFabVisible: Boolean = false,
         val players: List<Player> = emptyList(),
         val searchPattern: TextFieldValue = TextFieldValue(""),
+        /**
+         *  To use with Toast.makeText(context, "message", Toast.Short).show(), SnackBar
+         */
         val errorText: String? = null,
     )
 

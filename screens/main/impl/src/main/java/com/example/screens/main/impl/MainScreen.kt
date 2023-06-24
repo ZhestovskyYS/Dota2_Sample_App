@@ -19,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.impl.R
@@ -60,6 +62,9 @@ fun MainScreen(
         when (incomingEffect) {
             is MainScreenContract.Effect.NavigateToPlayerScreen -> {
                 // TODO: Open Player info screen
+                /**
+                 *  Dialog()
+                 */
             }
 
             is MainScreenContract.Effect.ShowPlayerCardDialog -> {
@@ -78,6 +83,12 @@ fun MainScreen(
             event(MainScreenContract.Event.ListWasOverScrolled)
         else
             event(MainScreenContract.Event.ListIsOnTop)
+    }
+
+    LaunchedEffect(state.errorText) {
+        if (state.errorText != null) {
+            // TODO: show message
+        }
     }
 
     MainScreenContent(
