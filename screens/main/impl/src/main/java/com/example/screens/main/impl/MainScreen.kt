@@ -38,14 +38,17 @@ import kotlinx.coroutines.withContext
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel,
+    navigateToPlayerScreen: @Composable () -> Unit,
     @DrawableRes
     placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon,
 ) {
     val (state, event, effect) = use(viewModel)
 
     val context = LocalContext.current
-    var playerToShow: PlayerInfoShort? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
+    var playerToShow: PlayerInfoShort? by remember { mutableStateOf(null) }
+    var needToNavigate: Boolean by remember { mutableStateOf(false) }
+
     val scaffoldState = rememberScaffoldState()
     val lazyColumnState = rememberLazyListState()
     val firstVisibleItemIndex by remember {
@@ -66,11 +69,14 @@ fun MainScreen(
     if (state.errorText != null)
         Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
 
+    if (needToNavigate) {
+        navigateToPlayerScreen()
+        needToNavigate = false
+    }
+
     effect.collectInLaunchedEffect { incomingEffect ->
         when (incomingEffect) {
-            is MainScreenContract.Effect.NavigateToPlayerScreen -> {
-                // TODO: Open Player info screen
-            }
+            is MainScreenContract.Effect.NavigateToPlayerScreen -> needToNavigate = true
 
             is MainScreenContract.Effect.ShowPlayerCardDialog ->
                 playerToShow = incomingEffect.player
