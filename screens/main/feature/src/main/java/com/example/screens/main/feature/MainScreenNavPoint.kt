@@ -11,9 +11,10 @@ import com.example.screens.main.impl.MainScreenHolder
 import com.example.utils.ScreenNavPoint
 
 class MainScreenNavPoint(
-    private val navigateToPlayerScreen: @Composable () -> Unit
+    private val navigateToPlayerScreen: @Composable (profileId: String) -> Unit
 ) : ScreenNavPoint {
     override val link = "MainScreen"
+    override var argument: String? = null
 
     @ExperimentalLayoutApi
     @ExperimentalMaterialApi

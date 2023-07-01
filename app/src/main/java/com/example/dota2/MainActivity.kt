@@ -33,7 +33,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            val mainScreenNavPoint = MainScreenNavPoint {
+            val mainScreenNavPoint = MainScreenNavPoint { profileId ->
+                PlayerScreenNavPoint.argument = profileId
                 navController.navigate(PlayerScreenNavPoint.link)
             }
 

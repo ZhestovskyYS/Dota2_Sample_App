@@ -10,7 +10,6 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,15 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.impl.R
-import com.example.screens.main.api.data.Player
 import com.example.screens.main.api.data.PlayerInfoShort
 import com.example.screens.main.impl.components.MainScreenContent
 import com.example.screens.main.impl.components.PlayerCardDialog
 import com.example.utils.mvi.collectInLaunchedEffect
 import com.example.utils.mvi.use
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 @ExperimentalLayoutApi
@@ -38,7 +34,7 @@ import kotlinx.coroutines.withContext
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel,
-    navigateToPlayerScreen: @Composable () -> Unit,
+    navigateToPlayerScreen: @Composable (profileId: String) -> Unit,
     @DrawableRes
     placeHolderDrawableRes: Int = R.drawable.dota2_logo_icon,
 ) {
@@ -47,7 +43,7 @@ fun MainScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var playerToShow: PlayerInfoShort? by remember { mutableStateOf(null) }
-    var needToNavigate: Boolean by remember { mutableStateOf(false) }
+    var playerIdForInfoScreen: String? by remember { mutableStateOf(null) }
 
     val scaffoldState = rememberScaffoldState()
     val lazyColumnState = rememberLazyListState()
@@ -69,14 +65,15 @@ fun MainScreen(
     if (state.errorText != null)
         Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
 
-    if (needToNavigate) {
-        navigateToPlayerScreen()
-        needToNavigate = false
+    playerIdForInfoScreen?.let {
+        navigateToPlayerScreen(it)
+        playerIdForInfoScreen = null
     }
 
     effect.collectInLaunchedEffect { incomingEffect ->
         when (incomingEffect) {
-            is MainScreenContract.Effect.NavigateToPlayerScreen -> needToNavigate = true
+            is MainScreenContract.Effect.NavigateToPlayerScreen ->
+                playerIdForInfoScreen = incomingEffect.player.id
 
             is MainScreenContract.Effect.ShowPlayerCardDialog ->
                 playerToShow = incomingEffect.player

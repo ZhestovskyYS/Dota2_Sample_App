@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @ExperimentalFoundationApi
 fun MainScreenHolder(
     modifier: Modifier = Modifier,
-    navigateToPlayerScreen: @Composable () -> Unit,
+    navigateToPlayerScreen: @Composable (profileId: String) -> Unit,
 ) {
     MainScreen(
         modifier,
