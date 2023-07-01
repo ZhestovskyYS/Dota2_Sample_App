@@ -1,11 +1,15 @@
 package com.example.screens.main.impl
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.entities.ProcessState
 import com.example.screens.main.api.data.Player
+import com.example.screens.main.api.usecases.GetPlayerInfoShortUseCase
 import com.example.screens.main.api.usecases.GetPlayersUseCase
 import com.example.screens.main.impl.usecases.GetPlayerUseCaseImpl
+import com.example.screens.player.feature.GetPlayerInfoShortUseCaseImpl
+import com.example.utils.OpenLinkUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,13 +22,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
-    private val getPlayersUseCase: GetPlayersUseCase = GetPlayerUseCaseImpl()
+    private val getPlayersUseCase: GetPlayersUseCase = GetPlayerUseCaseImpl(),
+    private val getPlayerShortInfoUseCase: GetPlayerInfoShortUseCase = GetPlayerInfoShortUseCaseImpl(),
+    private val openLinkUseCase: OpenLinkUseCase = OpenLinkUseCase(),
 ) : ViewModel(), MainScreenContract {
 
     private val _state = MutableStateFlow(MainScreenContract.State())
     override val state = _state.asStateFlow()
 
     private var lastSavedPattern = ""
+    private var wasSearchedAlready = false
 
     private val _effect = MutableSharedFlow<MainScreenContract.Effect>()
     override val effect = _effect.asSharedFlow()
@@ -38,7 +45,15 @@ class MainScreenViewModel(
 
             is MainScreenContract.Event.PlayerCardWasLongClicked ->
                 viewModelScope.launch {
-                    _effect.emit(MainScreenContract.Effect.ShowPlayerCardDialog(event.player))
+                    when (val response = getPlayerShortInfoUseCase(event.player.id)) {
+                        is ProcessState.Error -> _state.update {
+                            it.copy(errorText = response.throwable.localizedMessage)
+                        }
+
+                        is ProcessState.Success -> _effect.emit(
+                            MainScreenContract.Effect.ShowPlayerCardDialog(response.result)
+                        )
+                    }
                 }
 
             is MainScreenContract.Event.SearchPatternInput -> _state.update { currentState ->
@@ -83,6 +98,14 @@ class MainScreenViewModel(
 
             MainScreenContract.Event.ListIsOnTop -> _state.update { currentState ->
                 currentState.copy(isFabVisible = false)
+            }
+
+            is MainScreenContract.Event.PlayerProfileButtonClicked-> viewModelScope.launch {
+                _effect.emit(
+                    MainScreenContract.Effect.OpenLink {
+                        openLink(event.url)
+                    }
+                )
             }
         }
     }
@@ -138,11 +161,21 @@ class MainScreenViewModel(
             }
         }
 
+        if (!wasSearchedAlready) {
+            wasSearchedAlready = true
+            _state.update {
+                it.copy(isInitialState = false)
+            }
+        }
         viewModelScope.launch {
             when (val response = getPlayersUseCase(searchPattern)) {
                 is ProcessState.Error -> onError(response.throwable)
                 is ProcessState.Success -> onSuccess(response.result)
             }
         }
+    }
+
+    private fun Context.openLink(url: String) = with(openLinkUseCase) {
+        invoke(url)
     }
 }

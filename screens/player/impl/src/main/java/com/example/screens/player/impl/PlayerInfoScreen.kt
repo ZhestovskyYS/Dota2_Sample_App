@@ -33,6 +33,7 @@ fun PlayerInfoScreen(modifier: Modifier = Modifier) {
                         .wrapContentHeight(),
                     nickname = "Durachyo",
                     lastOnline = "12 hours ago",
+                    hasDotaPlus = false,
                     avatarImagePainter = painterResource(id = R.drawable.dota2_icon_placeholder),
                     onSteamProfileLinkIsClicked = { /*TODO*/ },
                     onProfileLinkIsClicked = { /*TODO*/ },

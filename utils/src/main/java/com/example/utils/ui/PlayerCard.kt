@@ -31,6 +31,7 @@ fun PlayerInfoCard(
     modifier: Modifier = Modifier,
     nickname: String,
     lastOnline: String,
+    hasDotaPlus: Boolean,
     avatarImagePainter: Painter,
     onProfileLinkIsClicked: () -> Unit,
     onSteamProfileLinkIsClicked: () -> Unit,
@@ -40,7 +41,7 @@ fun PlayerInfoCard(
         shape = RoundedCornerShape(12.dp),
         border = CardDefaults.outlinedCardBorder(enabled = true),
         colors = CardDefaults.outlinedCardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         elevation = CardDefaults.outlinedCardElevation(defaultElevation = 0.dp)
     ) {
@@ -53,7 +54,7 @@ fun PlayerInfoCard(
         ) {
             AvatarImage(
                 painter = avatarImagePainter,
-                hasDotaPlus = true
+                hasDotaPlus = hasDotaPlus
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -110,8 +111,8 @@ fun PlayerInfoCard(
                     .fillMaxWidth()
                     .wrapContentHeight(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 onClick = onProfileLinkIsClicked,
             ) {
@@ -129,7 +130,7 @@ fun PlayerInfoCard(
                     .wrapContentHeight(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 ),
                 onClick = onSteamProfileLinkIsClicked,
             ) {
@@ -149,6 +150,7 @@ private fun PlayerCard_Preview() {
         avatarImagePainter = painterResource(id = R.drawable.dota2_icon_placeholder),
         nickname = "Durachyo",
         lastOnline = "12 hours ago",
+        hasDotaPlus = true,
         onProfileLinkIsClicked = {},
         onSteamProfileLinkIsClicked = {},
     )

@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Dota2Theme(dynamicColor = true) {
+            Dota2Theme(dynamicColor = false) {
                 // A surface container using the 'background' color from the theme
                 MainScreenHolder(modifier = Modifier.fillMaxSize())
             }

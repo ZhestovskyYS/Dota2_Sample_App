@@ -39,7 +39,7 @@ fun AvatarImage(
                     .align(Alignment.BottomEnd)
                     .clip(CircleShape)
                     .size(30.dp)
-                    .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                    .background(color = MaterialTheme.colorScheme.inversePrimary),
                 painter = painterResource(id = R.drawable.dota_plus_icon),
                 contentDescription = "Player Has DotaPlus subscription",
                 contentPadding = PaddingValues(5.dp)

@@ -83,6 +83,7 @@ internal fun MainScreenContent(
     lazyColumnState: LazyListState,
     @DrawableRes
     placeHolderDrawableRes: Int,
+    isInitialState: Boolean,
     isRefreshing: Boolean,
     isFabVisible: Boolean,
     onFabIsClicked: () -> Unit,
@@ -147,7 +148,8 @@ internal fun MainScreenContent(
                 } else {
                     EmptyListPlaceholder(
                         modifier = Modifier.fillMaxSize(),
-                        message = "No players found"
+                        message = if (isInitialState) "No players found"
+                        else "Input player's nick to search"
                     )
                 }
 
@@ -209,6 +211,7 @@ fun MainScreenPreview1() {
             pullRefreshState = pullRefreshState,
             lazyColumnState = lazyColumnState,
             placeHolderDrawableRes = R.drawable.dota2_logo_icon,
+            isInitialState = true,
             isRefreshing = isRefreshing,
             isFabVisible = isFabVisible,
             onFabIsClicked = {
@@ -350,6 +353,7 @@ fun MainScreenPreview2() {
             pullRefreshState = pullRefreshState,
             lazyColumnState = lazyColumnState,
             placeHolderDrawableRes = R.drawable.dota2_logo_icon,
+            isInitialState = false,
             isRefreshing = isRefreshing,
             isFabVisible = isFabVisible,
             onFabIsClicked = {
