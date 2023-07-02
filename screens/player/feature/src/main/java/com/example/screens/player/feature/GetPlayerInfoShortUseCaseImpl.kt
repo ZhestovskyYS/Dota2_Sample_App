@@ -12,6 +12,7 @@ import java.util.Date
 
 class GetPlayerInfoShortUseCaseImpl : GetPlayerInfoShortUseCase {
     private val repository = ReposProvider.profileRepo
+    private val loadImagesUseCase = LoadImageUseCase()
 
     override suspend fun invoke(profileId: String): ProcessState<PlayerInfoShort> =
         withContext(Dispatchers.IO) {

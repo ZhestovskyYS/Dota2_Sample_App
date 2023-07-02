@@ -21,6 +21,7 @@ import com.example.dota2.ui.theme.Dota2Theme
 import com.example.screens.main.feature.MainScreenNavPoint
 import com.example.screens.main.impl.MainScreenHolder
 import com.example.screens.player.feature.PlayerScreenNavPoint
+import com.example.utils.ContextHolder
 
 @ExperimentalLayoutApi
 @ExperimentalMaterialApi
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ContextHolder.instance = applicationContext
         setContent {
             val navController = rememberNavController()
 

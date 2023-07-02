@@ -1,14 +1,12 @@
 package com.example.domain.impl.repo
 
-import android.net.Uri
-import com.example.domain.impl.dto.HeroInfo
+import com.example.domain.impl.dto.HeroInfoDto
 import com.example.domain.impl.dto.PlayerInfoDto
 import com.example.domain.impl.net.NetworkService
 import com.expample.domain.api.entities.PlayerEntity
 import com.expample.domain.api.entities.PlayerInfoEntity
 import com.expample.domain.api.entities.PlayerInfoShortEntity
 import com.expample.domain.api.repo.PlayerRepository
-import io.ktor.client.request.HttpRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -38,7 +36,7 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override suspend fun getPlayerInfo(playerId: String): PlayerInfoEntity =
         withContext(Dispatchers.IO) {
-            val allHeroes = async(SupervisorJob()) {
+            val allHeroesTask = async(SupervisorJob()) {
                 NetworkService.serverAPI.getHeroes()
             }
             val mainInfoTask = async(SupervisorJob()) {
@@ -54,7 +52,7 @@ class PlayerRepositoryImpl : PlayerRepository {
 
             val mainInfo = mainInfoTask.await()
             val mostPlayedHero = heroesTask.await().maxBy { it.games }
-            val mostPlayedHeroInfo = allHeroes.await().get(mostPlayedHero.id)
+            val mostPlayedHeroInfo = allHeroesTask.await().get(mostPlayedHero.id)
             val winsLosses = winsLossesTask.await()
 
             PlayerInfoEntity(
@@ -76,8 +74,17 @@ class PlayerRepositoryImpl : PlayerRepository {
     private fun buildProfileLink(mainInfo: PlayerInfoDto) =
         "$PROFILE_HOST${mainInfo.profile.id}"
 
-    private fun buildImageResUrl(mostPlayedHeroInfo: HeroInfo?) =
+    private fun buildImageResUrl(mostPlayedHeroInfo: HeroInfoDto?) =
         "$RES_HOST${mostPlayedHeroInfo?.avatarSuffix}"
+
+    private fun fetchDate(lastLogin: String?): String {
+        if (lastLogin == null) return "no date provided"
+
+        // date format : yyyy-MM-dd’T’HH:mm:ss.SSS’Z’
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val date = formatter.parse(lastLogin)
+        return getDateDiff(date)
+    }
 
     private fun getDateDiff(date: Date): String {
         var msDiff = Date().time - date.time
@@ -99,14 +106,6 @@ class PlayerRepositoryImpl : PlayerRepository {
             else NONE
 
         return if (leadingMeasure != NONE) "$leadingMeasure ago" else "just now"
-    }
-
-    private fun fetchDate(lastLogin: String?): String {
-        if (lastLogin == null) return "no date provided"
-        // date format : yyyy-MM-dd’T’HH:mm:ss.SSS’Z’
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val date = formatter.parse(lastLogin)
-        return getDateDiff(date)
     }
 
     override suspend fun getPlayerInfoShort(playerId: String): PlayerInfoShortEntity =

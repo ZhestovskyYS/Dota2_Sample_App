@@ -25,7 +25,6 @@ class GetPlayerUseCaseImpl : GetPlayersUseCase {
                     }
                 )
             } catch (e: Exception) {
-                e.printStackTrace()
                 ProcessState.Error(e)
             }
         }

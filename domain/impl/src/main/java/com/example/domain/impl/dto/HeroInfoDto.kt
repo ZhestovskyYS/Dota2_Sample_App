@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HeroInfo(
+data class HeroInfoDto(
     val id: Int,
     @SerialName("localized_name")
     val name: String,

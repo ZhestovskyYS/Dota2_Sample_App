@@ -12,7 +12,6 @@ class LoadImageUseCase {
             .data(url)
             .build()
 
-
         return ImageLoader(context)
             .execute(request)
             .drawable?.toBitmapOrNull()

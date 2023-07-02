@@ -1,7 +1,7 @@
 package com.example.domain.impl.net
 
 import com.example.domain.impl.dto.HeroDto
-import com.example.domain.impl.dto.HeroInfo
+import com.example.domain.impl.dto.HeroInfoDto
 import com.example.domain.impl.dto.PlayerDto
 import com.example.domain.impl.dto.PlayerInfoDto
 import com.example.domain.impl.dto.WinsLosses
@@ -13,7 +13,7 @@ import io.ktor.client.request.parameter
 class ServerAPI(
     private val client: HttpClient
 ) {
-    suspend fun getHeroes(): Map<Int, HeroInfo> =
+    suspend fun getHeroes(): Map<Int, HeroInfoDto> =
         client
             .get("/constants/heroes")
             .body()
