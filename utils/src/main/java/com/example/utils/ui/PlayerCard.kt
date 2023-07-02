@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +31,7 @@ fun PlayerInfoCard(
     nickname: String,
     lastOnline: String,
     hasDotaPlus: Boolean,
-    avatarImagePainter: Painter,
+    avatarUrl: String? = null,
     onProfileLinkIsClicked: () -> Unit,
     onSteamProfileLinkIsClicked: () -> Unit,
 ) {
@@ -53,7 +52,7 @@ fun PlayerInfoCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AvatarImage(
-                painter = avatarImagePainter,
+                url = avatarUrl,
                 hasDotaPlus = hasDotaPlus
             )
 
@@ -147,7 +146,6 @@ fun PlayerInfoCard(
 @Preview
 private fun PlayerCard_Preview() {
     PlayerInfoCard(
-        avatarImagePainter = painterResource(id = R.drawable.dota2_icon_placeholder),
         nickname = "Durachyo",
         lastOnline = "12 hours ago",
         hasDotaPlus = true,

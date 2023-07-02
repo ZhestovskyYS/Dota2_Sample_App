@@ -1,9 +1,9 @@
 package com.example.screens.player.impl.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,17 +14,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.screens.player.impl.R
 
 @Composable
 internal fun PlayerBestHeroOutlinedCard(
     modifier: Modifier = Modifier,
-    heroImagePainter: Painter,
+    heroImageUrl: String,
     heroName: String,
 ) {
     OutlinedCard(modifier = modifier) {
@@ -46,9 +47,14 @@ internal fun PlayerBestHeroOutlinedCard(
                 .height(190.dp)
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
-            Image(
-                modifier = Modifier.align(Alignment.Center),
-                painter = heroImagePainter,
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center),
+                contentScale = ContentScale.FillBounds,
+                placeholder = painterResource(id = com.example.utils.R.drawable.dota2_icon_placeholder),
+                error = painterResource(id = com.example.utils.R.drawable.dota2_icon_placeholder),
+                model = heroImageUrl,
                 contentDescription = "Hero image"
             )
         }
@@ -80,7 +86,7 @@ private fun PlayerBestHeroOutlinedCard_Preview() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        heroImagePainter = painterResource(id = com.example.utils.R.drawable.dota2_icon_placeholder),
+        heroImageUrl = "",
         heroName = "Abbadon"
     )
 }

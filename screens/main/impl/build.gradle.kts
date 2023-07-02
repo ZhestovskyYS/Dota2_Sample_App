@@ -44,6 +44,7 @@ android {
 dependencies {
     implementation(project(":screens:main:api"))
     implementation(project(":screens:player:feature"))
+    implementation(project(":domain:feature"))
     implementation(project(":utils"))
 
     implementation("androidx.core:core-ktx:1.10.1")

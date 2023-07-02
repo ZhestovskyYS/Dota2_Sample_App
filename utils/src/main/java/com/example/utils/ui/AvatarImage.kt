@@ -19,7 +19,8 @@ import com.example.utils.R
 @Composable
 fun AvatarImage(
     modifier: Modifier = Modifier,
-    painter: Painter,
+    painter: Painter = painterResource(id = R.drawable.dota2_icon_placeholder),
+    url: String? = null,
     hasDotaPlus: Boolean,
 ) {
     Box(modifier) {
@@ -29,6 +30,7 @@ fun AvatarImage(
                 .size(120.dp)
                 .background(color = MaterialTheme.colorScheme.primaryContainer),
             painter = painter,
+            url = url,
             contentDescription = "Player Avatar Image",
             contentPadding = PaddingValues(21.dp)
         )

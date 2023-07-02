@@ -42,7 +42,7 @@ fun PlayerInfoScreenContent(
                 nickname = player.nickname,
                 lastOnline = player.lastOnline,
                 hasDotaPlus = player.hasDotaPlus,
-                avatarImagePainter = chooseAvatar(player.avatar),
+                avatarUrl = player.avatar,
                 onSteamProfileLinkIsClicked = {
                     onProfileLinkButtonIsClicked(player.steamProfileLink)
                 },
@@ -62,7 +62,7 @@ fun PlayerInfoScreenContent(
                 mmr = player.mmr.toString(),
                 wins = player.wins.toString(),
                 losses = player.losses.toString(),
-                winRate = player.winRate.toString(),
+                winRate = "%.2f".format(player.winRate),
             )
         }
 
@@ -73,7 +73,7 @@ fun PlayerInfoScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                heroImagePainter = chooseAvatar(player.mostPlayedHeroImage),
+                heroImageUrl = player.mostPlayedHeroImageUrl,
                 heroName = player.mostPlayedHeroName
             )
 
@@ -103,14 +103,14 @@ private fun PlayerInfoScreenContent_Preview() {
                 player = PlayerInfo(
                     nickname = "Dyrachyo",
                     lastOnline = "12 hours ago",
-                    avatar = null,
+                    avatar = "null",
                     hasDotaPlus = true,
                     mmr = 6653,
                     losses = 3160,
                     wins = 3823,
                     winRate = 54.75f,
                     mostPlayedHeroName = "Juggernaut",
-                    mostPlayedHeroImage = null,
+                    mostPlayedHeroImageUrl = "null",
                     profileLink = "https://www.opendota.com/players/116934015",
                     steamProfileLink = "https://steamcommunity.com/id/dyrachyoo/",
                 ),

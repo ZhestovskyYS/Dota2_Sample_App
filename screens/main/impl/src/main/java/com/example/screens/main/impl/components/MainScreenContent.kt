@@ -245,77 +245,77 @@ fun MainScreenPreview2() {
         Player(
             id = "123",
             nickname = "Kostya",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1234",
             nickname = "Leha",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "12345",
             nickname = "Yarik",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "123456",
             nickname = "KonstAntin",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "123567",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "12358",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "123569",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235691",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235692",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235693",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235694",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235695",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235696",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235697",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         ),
         Player(
             id = "1235698",
             nickname = "Alex",
-            avatar = null
+            avatar = ""
         )
     )
     val coroutineScope = rememberCoroutineScope()

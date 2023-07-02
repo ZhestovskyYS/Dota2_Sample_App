@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.Dialog
-import com.example.screens.main.api.data.Player
 import com.example.screens.main.api.data.PlayerInfoShort
 import com.example.utils.R
 import com.example.utils.ui.PlayerInfoCard
@@ -26,7 +25,7 @@ internal fun PlayerCardDialog(
             nickname = player.nickname,
             hasDotaPlus = player.hasDotaPlus,
             lastOnline = player.lastOnline,
-            avatarImagePainter = chooseAvatar(player.avatar),
+            avatarUrl = player.avatar,
             onProfileLinkIsClicked = { onProfileLinkIsClicked(player.profileLink) },
             onSteamProfileLinkIsClicked = { onProfileLinkIsClicked(player.steamProfileLink) }
         )

@@ -41,6 +41,7 @@ android {
 dependencies {
     api(project(":screens:player:api"))
     implementation(project(":screens:player:impl"))
+    implementation(project(":domain:feature"))
     implementation(project(":utils"))
     implementation(project(":entities"))
 }
