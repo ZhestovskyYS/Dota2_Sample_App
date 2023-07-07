@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -22,6 +23,8 @@ import com.example.screens.main.feature.MainScreenNavPoint
 import com.example.screens.main.impl.MainScreenHolder
 import com.example.screens.player.feature.PlayerScreenNavPoint
 import com.example.utils.ContextHolder
+import com.exapmple.domain.feature.ReposProvider
+import kotlinx.coroutines.runBlocking
 
 @ExperimentalLayoutApi
 @ExperimentalMaterialApi
@@ -38,6 +41,10 @@ class MainActivity : ComponentActivity() {
             val mainScreenNavPoint = MainScreenNavPoint { profileId ->
                 PlayerScreenNavPoint.argument = profileId
                 navController.navigate(PlayerScreenNavPoint.link)
+            }
+
+            runBlocking {
+                ReposProvider.profileRepo.fetchHeroes()
             }
 
             Dota2Theme(dynamicColor = false) {

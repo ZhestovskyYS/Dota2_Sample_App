@@ -1,7 +1,9 @@
 package com.example.domain.impl.repo
 
-import com.example.domain.impl.dto.HeroInfoDto
-import com.example.domain.impl.dto.PlayerInfoDto
+import com.example.domain.impl.db.DatabaseService
+import com.example.domain.impl.db.entity.HeroEntity
+import com.example.domain.impl.net.dto.HeroInfoDto
+import com.example.domain.impl.net.dto.PlayerInfoDto
 import com.example.domain.impl.net.NetworkService
 import com.expample.domain.api.entities.PlayerEntity
 import com.expample.domain.api.entities.PlayerInfoEntity
@@ -21,6 +23,53 @@ private const val PROFILE_HOST = "https://www.opendota.com/players/"
 
 class PlayerRepositoryImpl : PlayerRepository {
 
+    override suspend fun fetchHeroes(): Unit = withContext(Dispatchers.IO) {
+        NetworkService.serverAPI
+            .getHeroes()
+            .values.map {
+                HeroEntity(
+                    id = it.id,
+                    name = it.keyName,
+                    localName = it.name,
+                    primaryAttr = it.primaryAttr,
+                    attackType = it.attackType,
+                    roles = it.roles.joinToString(),
+                    imgUrl = buildImageResUrl(it.imageSuffix),
+                    iconUrl = buildImageResUrl(it.iconSuffix),
+                    baseHealth = it.baseHealth,
+                    baseHealthRegen = it.baseHealthRegen,
+                    baseMana = it.baseMana,
+                    baseManaRegen = it.baseManaRegen,
+                    baseArmor = it.baseArmor,
+                    baseMr = it.baseMr,
+                    baseAttackMin = it.baseAttackMin,
+                    baseAttackMax = it.baseAttackMax,
+                    baseStr = it.baseStr,
+                    baseAgi = it.baseAgi,
+                    baseInt = it.baseInt,
+                    strGain = it.strGain,
+                    agiGain = it.agiGain,
+                    intGain = it.intGain,
+                    attackRange = it.attackRange,
+                    projectileSpeed = it.projectileSpeed,
+                    attackRate = it.attackRate,
+                    baseAttackTime = it.baseAttackTime,
+                    attackPoint = it.attackPoint,
+                    moveSpeed = it.moveSpeed,
+                    legs = it.legs,
+                    dayVision = it.dayVision,
+                    nightVision = it.nightVision,
+                )
+            }
+            .also {
+                DatabaseService.db
+                    .heroDao()
+                    .insertAll(it)
+            }
+    }
+
+    private fun buildImageResUrl(suffix: String) = "$RES_HOST${suffix}"
+
     override suspend fun searchPlayer(searchPattern: String): List<PlayerEntity> =
         withContext(Dispatchers.IO) {
             NetworkService.serverAPI
@@ -37,7 +86,7 @@ class PlayerRepositoryImpl : PlayerRepository {
     override suspend fun getPlayerInfo(playerId: String): PlayerInfoEntity =
         withContext(Dispatchers.IO) {
             val allHeroesTask = async(SupervisorJob()) {
-                NetworkService.serverAPI.getHeroes()
+                DatabaseService.db.heroDao().getAll()
             }
             val mainInfoTask = async(SupervisorJob()) {
                 NetworkService.serverAPI.getPlayerInfo(playerId)
@@ -64,8 +113,8 @@ class PlayerRepositoryImpl : PlayerRepository {
                 wins = winsLosses.wins,
                 losses = winsLosses.losses,
                 winRate = winsLosses.winRate,
-                mostPlayedHeroName = mostPlayedHeroInfo?.name ?: "none",
-                mostPlayedHeroImageUrl = buildImageResUrl(mostPlayedHeroInfo),
+                mostPlayedHeroName = mostPlayedHeroInfo.localName,
+                mostPlayedHeroImageUrl = mostPlayedHeroInfo.imgUrl,
                 profileLink = buildProfileLink(mainInfo),
                 steamProfileLink = mainInfo.profile.steamProfileLink
             )
@@ -73,9 +122,6 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     private fun buildProfileLink(mainInfo: PlayerInfoDto) =
         "$PROFILE_HOST${mainInfo.profile.id}"
-
-    private fun buildImageResUrl(mostPlayedHeroInfo: HeroInfoDto?) =
-        "$RES_HOST${mostPlayedHeroInfo?.avatarSuffix}"
 
     private fun fetchDate(lastLogin: String?): String {
         if (lastLogin == null) return "no date provided"

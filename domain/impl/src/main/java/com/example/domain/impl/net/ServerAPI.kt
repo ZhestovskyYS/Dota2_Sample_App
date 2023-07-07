@@ -1,10 +1,10 @@
 package com.example.domain.impl.net
 
-import com.example.domain.impl.dto.HeroDto
-import com.example.domain.impl.dto.HeroInfoDto
-import com.example.domain.impl.dto.PlayerDto
-import com.example.domain.impl.dto.PlayerInfoDto
-import com.example.domain.impl.dto.WinsLosses
+import com.example.domain.impl.net.dto.HeroDto
+import com.example.domain.impl.net.dto.HeroInfoDto
+import com.example.domain.impl.net.dto.PlayerDto
+import com.example.domain.impl.net.dto.PlayerInfoDto
+import com.example.domain.impl.net.dto.WinsLosses
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

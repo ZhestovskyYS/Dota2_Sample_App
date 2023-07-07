@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":screens:main:feature"))
     implementation(project(":screens:player:impl"))
     implementation(project(":screens:player:feature"))
+    implementation(project(":domain:feature"))
     implementation(project(":utils"))
 
     // Android
